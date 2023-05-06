@@ -16,3 +16,6 @@ class EndTurn:
     stamina_cost: int = 0
     end_stance: Optional[FightStance] = None
     effect: str = "Save up to 2 Stamina to use next turn."
+
+
+end_turn: EndTurn

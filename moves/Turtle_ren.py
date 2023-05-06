@@ -17,3 +17,6 @@ class Turtle:
     stamina_cost: int = 4
     end_stance: Optional[FightStance] = FightStance.DEFENSIVE
     effect: str = "+1 Guard"
+
+
+turtle: Turtle
