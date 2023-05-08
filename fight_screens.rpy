@@ -101,7 +101,7 @@ screen fight_overview(fight, title):
                             grid 3 2:
                                 spacing 10
 
-                                for quirk in FightQuirk.quirks:
+                                for quirk in fight_quirks:
                                     button:
                                         idle_background "fight_attack_idle2"
                                         selected_background "fight_attack_hover"
