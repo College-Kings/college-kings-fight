@@ -10,9 +10,10 @@ init python:
 
 class OverhandPunch(SpecialMove):
     def __init__(self, images: dict[str, str]) -> None:
-        super().__init__("Overhand Punch", ideal_stance=FightStance.FORWARD)
         self.images: dict[str, str] = images
 
+        self.name = "Overhand Punch"
+        self.ideal_stance = FightStance.FORWARD
         self.description = "Breaks Guard and deals 100% Damage if it's at 30% or less"
         self.damage = 3
         self.stamina_cost = 3

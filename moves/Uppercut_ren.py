@@ -10,9 +10,10 @@ init python:
 
 class Uppercut(SpecialMove):
     def __init__(self, images: dict[str, str]) -> None:
-        super().__init__("Uppercut", ideal_stance=FightStance.AGGRESSIVE)
         self.images: dict[str, str] = images
 
+        self.name = "Uppercut"
+        self.ideal_stance = FightStance.AGGRESSIVE
         self.description = (
             "If Opponent's Health is 20% or less, this attack deals +50% Damage"
         )

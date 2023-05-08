@@ -4,6 +4,8 @@ from game.fight.moves.Turtle_ren import Turtle
 from game.fight.moves.types_ren import FightMove
 from game.fight.Fight_ren import Fight
 
+turtle: Turtle
+
 """renpy
 init python:
 """
@@ -44,8 +46,8 @@ class Opponent(Fighter):
     def get_reckless_multiplier(self, fight: Fight) -> float:
         try:
             if (
-                fight.move_list[-5][fight.player.name][-1] != Turtle
-                and fight.move_list[-3][fight.player.name][-1] != Turtle
+                fight.move_list[-5][fight.player.name][-1] != turtle
+                and fight.move_list[-3][fight.player.name][-1] != turtle
             ):
                 return 1.0
 

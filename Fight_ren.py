@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
+from typing import ClassVar
 
+from game.fight.FightStance_ren import FightStance
 from game.fight.moves.types_ren import FightMove
 from game.characters.PlayableCharacters_ren import PlayableCharacter
 from game.characters.NonPlayableCharacter_ren import NonPlayableCharacter
@@ -11,6 +13,13 @@ init python:
 
 @dataclass
 class Fight:
+    DAMAGE_DICT: ClassVar[dict[FightStance, int]] = {
+        FightStance.AGGRESSIVE: 5,
+        FightStance.DEFENSIVE: -5,
+        FightStance.FORWARD: 0,
+        FightStance.SOLID: 0,
+    }
+
     player: PlayableCharacter
     opponent: NonPlayableCharacter
     end_label: str

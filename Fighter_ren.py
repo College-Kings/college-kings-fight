@@ -1,9 +1,8 @@
 from __future__ import annotations
-from typing import Optional, Union
+from typing import Optional
 
 from game.fight.FightStance_ren import FightStance
-from game.fight.moves.BaseAttack_ren import BaseAttack
-from game.fight.moves.types_ren import FightMove
+from game.fight.moves.types_ren import BaseAttack, FightMove
 from game.fight.quirks.FightQuirk_ren import FightQuirk
 from game.fight.Fight_ren import Fight
 from game.fight.moves.SpecialMove_ren import SpecialMove
@@ -42,7 +41,7 @@ class Fighter:
         self._guard: float = stance.value
 
         self.turn_moves: list[FightMove] = [turtle, end_turn]
-        self.base_attacks: list[Union[BaseAttack, SpecialMove]] = []
+        self.base_attacks: list[BaseAttack] = []
         self.special_attacks: list[SpecialMove] = []
         self.special_attack: Optional[SpecialMove] = None
         self.previous_moves: list[FightMove] = []

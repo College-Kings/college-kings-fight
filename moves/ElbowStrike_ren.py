@@ -10,7 +10,8 @@ init python:
 
 class ElbowStrike(SpecialMove):
     def __init__(self, images: dict[str, str]) -> None:
-        super().__init__("Elbow Strike", ideal_stance=FightStance.SOLID)
+        self.name: str = "Elbow Strike"
+        self.ideal_stance: FightStance = FightStance.SOLID
         self.images: dict[str, str] = images
 
         self.description: str = ""

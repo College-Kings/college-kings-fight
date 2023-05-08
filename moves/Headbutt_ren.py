@@ -11,7 +11,8 @@ init python:
 
 class Headbutt(SpecialMove):
     def __init__(self, images: dict[str, str]) -> None:
-        super().__init__("Headbutt", ideal_stance=FightStance.AGGRESSIVE)
+        self.name: str = "Headbutt"
+        self.ideal_stance: FightStance = FightStance.AGGRESSIVE
         self.images: dict[str, str] = images
 
         self.description: str = 'If you used "Turtle" last turn, deal +30% more Damage'

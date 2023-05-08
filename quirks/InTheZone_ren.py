@@ -1,6 +1,6 @@
 import re
 from game.fight.Fighter_ren import Fighter
-from game.fight.moves.BaseAttack_ren import BaseAttack
+from game.fight.moves.types_ren import BaseAttack
 from game.fight.quirks.FightQuirk_ren import FightQuirk
 
 """renpy

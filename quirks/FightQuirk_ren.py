@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from game.fight.Fighter_ren import Fighter
-from game.fight.moves.BaseAttack_ren import BaseAttack
+from game.fight.moves.types_ren import BaseAttack
 
 """renpy
 init -10 python:
