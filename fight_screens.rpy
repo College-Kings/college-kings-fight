@@ -202,19 +202,19 @@ screen fight_overview(fight, title):
                 Jump(fight.end_label)]
             yalign 0.5
 
-    if "fight_preparation_tutorial" in persistent.hidden_tutorials or "fight_tutorial" in persistent.hidden_tutorials:
+    if not (persistent.enabled_tutorials["fight_preparation_tutorial"] or persistent.enabled_tutorials["fight_tutorial"]):
         textbutton "SHOW ALL FIGHT TUTORIALS":
             align (1.0, 1.0)
             offset (-100, -100)
             text_font "fonts/Montserrat-Bold.ttf"
-            action [RemoveFromSet(persistent.hidden_tutorials, "fight_preparation_tutorial"), RemoveFromSet(persistent.hidden_tutorials, "fight_tutorial"), Show("fight_preparation_tutorial")]
+            action [SetDict(persistent.enabled_tutorials, "fight_preparation_tutorial", True), SetDict(persistent.enabled_tutorials, "fight_tutorial", True), Show("fight_preparation_tutorial")]
 
     if config_debug:
         timer 0.1 action [SetField(opponent, "max_health", int(opponent.max_health)),
                 SetField(opponent, "max_stamina", int(opponent.max_stamina)),
                 Call("fight_start_turn", fight, opponent, player)]
 
-    if "fight_preparation_tutorial" not in persistent.hidden_tutorials:
+    if persistent.enabled_tutorials["fight_preparation_tutorial"]:
         on "show" action Show("fight_preparation_tutorial")
 
 screen fight_player_turn(fight, player, opponent):
