@@ -18,3 +18,9 @@ class BodyHook:
     stamina_cost: int = 2
     end_stance: Optional[FightStance] = FightStance.SOLID
     effect: str = "+20% Damage to next attack this turn"
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, BodyHook):
+            return NotImplemented
+
+        return self.images == __value.images

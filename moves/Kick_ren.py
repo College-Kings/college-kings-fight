@@ -17,3 +17,9 @@ class Kick:
     stamina_cost: int = 5
     end_stance: FightStance = FightStance.FORWARD
     effect: str = "+20% Damage if used with exactly 5 Stamina left"
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, Kick):
+            return NotImplemented
+
+        return self.images == __value.images

@@ -9,7 +9,7 @@ init python:
 """
 
 
-@dataclass
+@dataclass(frozen=True)
 class Turtle:
     name: str = "Turtle"
     ideal_stance: FightStance = FightStance.SOLID

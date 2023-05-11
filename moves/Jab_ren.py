@@ -17,3 +17,9 @@ class Jab:
     stamina_cost: int = 3
     end_stance: FightStance = FightStance.FORWARD
     effect: str = "Next Attack this turn ignores guard"
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, Jab):
+            return NotImplemented
+
+        return self.images == __value.images

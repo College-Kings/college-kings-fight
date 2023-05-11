@@ -41,3 +41,13 @@ class Fight:
                 "damage_taken": 0,
             },
         }
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, Fight):
+            return NotImplemented
+
+        return (
+            self.player == __value.player
+            and self.opponent == __value.opponent
+            and self.end_label == __value.end_label
+        )

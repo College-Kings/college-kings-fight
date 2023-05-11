@@ -9,7 +9,7 @@ init python:
 """
 
 
-@dataclass
+@dataclass(frozen=True)
 class EndTurn:
     name: str = "End Turn"
     description: str = "End your turn and retain up to 2 stamina"
