@@ -1,3 +1,4 @@
+from game.fight.FightService_ren import FightService
 from game.fight.Fight_ren import Fight
 from game.fight.moves.SpecialMove_ren import SpecialMove
 from game.fight.FightStance_ren import FightStance
@@ -21,12 +22,12 @@ class OverhandPunch(SpecialMove):
         self.effect = "Breaks Guard and deals 100% Damage if it's at 30% or less"
 
     def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
-        return fight.stats[attacker.name]["guards_broken"] >= 3
+        return fight.stats[attacker]["guards_broken"] >= 3
 
     def check_level_1_stance_bonus(
         self, fight: Fight, target: Fighter, attacker: Fighter
     ) -> bool:
-        return target.guard <= Fighter.MAX_GUARD * 0.3
+        return target.current_guard <= FightService.MAX_GUARD * 0.3
 
     def check_level_2_stance_bonus(
         self, fight: Fight, target: Fighter, attacker: Fighter

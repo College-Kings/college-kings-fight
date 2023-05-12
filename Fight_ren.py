@@ -1,10 +1,9 @@
 from dataclasses import dataclass, field
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from game.fight.FightStance_ren import FightStance
+from game.fight.Fighter_ren import Fighter
 from game.fight.moves.types_ren import FightMove
-from game.characters.PlayableCharacters_ren import PlayableCharacter
-from game.characters.NonPlayableCharacter_ren import NonPlayableCharacter
 
 """renpy
 init python:
@@ -20,27 +19,12 @@ class Fight:
         FightStance.SOLID: 0,
     }
 
-    player: PlayableCharacter
-    opponent: NonPlayableCharacter
     end_label: str
+    player: Optional[Fighter] = None
+    opponent: Optional[Fighter] = None
 
-    move_list: list[dict[str, list[FightMove]]] = field(default_factory=list)
-
-    def __post__init__(self) -> None:
-        self.stats: dict[str, dict[str, int]] = {
-            self.player.name: {
-                "guards_broken": 0,
-                "damage_dealt": 0,
-                "damage_blocked": 0,
-                "damage_taken": 0,
-            },
-            self.opponent.name: {
-                "guards_broken": 0,
-                "damage_dealt": 0,
-                "damage_blocked": 0,
-                "damage_taken": 0,
-            },
-        }
+    move_list: list[dict[Fighter, list[FightMove]]] = field(default_factory=list)
+    stats: dict[Fighter, dict[str, int]] = field(default_factory=dict)
 
     def __eq__(self, __value: object) -> bool:
         if not isinstance(__value, Fight):

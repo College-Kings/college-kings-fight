@@ -21,7 +21,7 @@ class ElbowStrike(SpecialMove):
         self.effect = "50% Damage bypasses Guard"
 
     def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
-        return fight.stats[attacker.name]["damage_taken"] >= 40
+        return fight.stats[attacker]["damage_taken"] >= 40
 
     def check_level_1_stance_bonus(
         self, fight: Fight, target: Fighter, attacker: Fighter

@@ -19,4 +19,4 @@ class Turtle:
     effect: str = "+1 Guard"
 
 
-turtle: Turtle
+turtle = Turtle()

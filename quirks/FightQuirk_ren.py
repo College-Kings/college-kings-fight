@@ -4,7 +4,7 @@ from game.fight.Fighter_ren import Fighter
 from game.fight.moves.types_ren import BaseAttack
 
 """renpy
-init -10 python:
+init python:
 """
 
 

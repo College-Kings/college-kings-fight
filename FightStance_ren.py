@@ -1,3 +1,4 @@
+from typing import Any
 from enum import IntEnum
 import enum
 
@@ -13,5 +14,5 @@ class FightStance(IntEnum):
     DEFENSIVE = enum.auto()
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, value: Any):
         return cls.AGGRESSIVE

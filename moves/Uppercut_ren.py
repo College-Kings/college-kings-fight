@@ -25,12 +25,12 @@ class Uppercut(SpecialMove):
         )
 
     def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
-        return fight.stats[attacker.name]["damage_dealt"] >= 40
+        return fight.stats[attacker]["damage_dealt"] >= 40
 
     def check_level_1_stance_bonus(
         self, fight: Fight, target: Fighter, attacker: Fighter
     ) -> bool:
-        return target.health <= target.max_health * 0.2
+        return target.current_health <= target.max_health * 0.2
 
     def check_level_2_stance_bonus(
         self, fight: Fight, target: Fighter, attacker: Fighter
@@ -40,4 +40,4 @@ class Uppercut(SpecialMove):
     def check_level_3_stance_bonus(
         self, fight: Fight, target: Fighter, attacker: Fighter
     ) -> bool:
-        return not fight.move_list[-1][attacker.name]
+        return not fight.move_list[-1][attacker]

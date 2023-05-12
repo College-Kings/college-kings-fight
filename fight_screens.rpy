@@ -7,8 +7,8 @@ screen fight_overview(fight, title):
     default hovering_opponent = False
 
     python:
-        player = fight.player.fighter
-        opponent = fight.opponent.fighter
+        player = fight.player
+        opponent = fight.opponent
 
     add "fight_background"
 
@@ -28,7 +28,7 @@ screen fight_overview(fight, title):
                     xpos 55
                     spacing 10
 
-                    add Transform(competitor.profile_picture, xysize=(80, 80)) yalign 0.5
+                    add Transform(competitor.character.profile_picture, xysize=(80, 80)) yalign 0.5
 
                 frame:
                     xysize (810, 682)
@@ -40,8 +40,8 @@ screen fight_overview(fight, title):
                         ypos 45
                         spacing 2
 
-                        for i in range(int(competitor.fighter.max_health)):
-                            add Transform("#f00", size=((750/competitor.fighter.max_health) - 2, 20))
+                        for i in range(int(competitor.max_health)):
+                            add Transform("#f00", size=((750/competitor.max_health) - 2, 20))
 
                     vbox:
                         align (0.5, 0.5)
@@ -55,7 +55,7 @@ screen fight_overview(fight, title):
                             grid 2 2:
                                 spacing 10
 
-                                for attack in competitor.fighter.base_attacks:
+                                for attack in competitor.base_attacks:
                                     button:
                                         background "fight_attack_idle"
                                         hovered SetScreenVariable("hovering_opponent", competitor != fight.player)
@@ -76,18 +76,18 @@ screen fight_overview(fight, title):
                                 spacing 10
                                 allow_underfull True
 
-                                for attack in competitor.fighter.special_attacks:
+                                for attack in competitor.special_attacks:
                                     button:
                                         background "fight_attack_idle2"
                                         selected_background "fight_attack_hover"
-                                        selected (competitor.fighter.special_attack == attack)
+                                        selected (competitor.special_attack == attack)
                                         xysize (206, 58)
                                         padding (5, 5)
                                         hovered SetScreenVariable("hovering_opponent", competitor != fight.player)
                                         tooltip attack.effect
                                         if competitor == fight.player:
                                             hover_background "fight_attack_hover"
-                                            action SetField(competitor.fighter, "special_attack", attack)
+                                            action SetField(competitor, "special_attack", attack)
                                         else:
                                             action NullAction()
 
@@ -106,15 +106,15 @@ screen fight_overview(fight, title):
                                         idle_background "fight_attack_idle2"
                                         selected_background "fight_attack_hover"
                                         insensitive_background "fight_attack_insensitive"
-                                        selected (competitor.fighter.quirk == quirk)
+                                        selected (competitor.quirk == quirk)
                                         xysize (206, 58)
                                         padding (5, 5)
                                         hovered SetScreenVariable("hovering_opponent", competitor != fight.player)
                                         tooltip quirk.description
                                         if competitor == fight.player:
                                             hover_background "fight_attack_hover"
-                                            action SetField(competitor.fighter, "quirk", quirk)
-                                        elif competitor.fighter.quirk == quirk:
+                                            action SetField(competitor, "quirk", quirk)
+                                        elif competitor.quirk == quirk:
                                             action NullAction()
 
                                         text quirk.name align (0.5, 0.5)
@@ -185,11 +185,7 @@ screen fight_overview(fight, title):
             hover "fight_play_fight_hover"
             insensitive "fight_play_fight_insensitive"
             sensitive (player.special_attack is not None and player.quirk is not None)
-            action [SetField(opponent, "max_health", int(opponent.max_health)),
-                SetField(opponent, "max_stamina", int(opponent.max_stamina)),
-                SetField(opponent, "health", int(opponent.max_health)),
-                SetField(opponent, "stamina", int(opponent.max_stamina)),
-                Call("fight_start_turn", fight, opponent, player)]
+            action [Function(FightService.start_fight, fight), Call("fight_start_turn", fight, opponent, player)]
             yalign 0.5
 
         imagebutton:
@@ -222,7 +218,7 @@ screen fight_player_turn(fight, player, opponent):
     style_prefix "fight_turn"
 
     default selected_move = None
-    default player_max_stamina = max(player.stamina, player.max_stamina)
+    default player_max_stamina = max(player.current_stamina, player.max_stamina)
 
     add opponent.stance_image
 
@@ -297,7 +293,7 @@ screen fight_player_turn(fight, player, opponent):
                     hover_background "fight_actions_hover"
                     selected_background "fight_actions_hover"
                 insensitive_background "fight_actions_insensitive"
-                sensitive (player.stamina >= move.stamina_cost)
+                sensitive (player.current_stamina >= move.stamina_cost)
                 selected (selected_move == move)
                 if selected_move == move:
                     action [SetScreenVariable("selected_move", None), Hide("action_info")]
@@ -334,15 +330,16 @@ screen fight_player_turn(fight, player, opponent):
             spacing 5
 
             for i in range(1, player_max_stamina + 1):
-                if i > player.stamina:
+                if i > player.current_stamina:
                     add "fight_stamina_empty"
                 else:
                     add "fight_stamina_filled"
 
     if config_debug:
-        timer 0.1 action [Function(player.set_stance_bonus, renpy.random.choice(player.base_attacks + player.turn_moves)), Call("fight_attack_turn", fight, opponent, player, move)]
+        $ move = random.choice(player.base_attacks + player.turn_moves)
+        timer 0.1 action [Function(FightService.set_stance_bonus, player, move), Call("fight_attack_turn", fight, opponent, player, move)]
 
-    if "fight_tutorial" not in persistent.hidden_tutorials:
+    if persistent.enabled_tutorials["fight_tutorial"]:
         on "show" action Show("fight_tutorial")
 
 style fight_turn_text is text:
@@ -360,9 +357,9 @@ style fight_turn_stance_text is text:
 
 screen health_bars(player, opponent, move=None):
     default bar_size = 550.0
-    default guard_segment_size = (bar_size - BasePlayer.MAX_GUARD) / BasePlayer.MAX_GUARD
-    default opponent_health_segment_size = (bar_size - opponent.fighter.max_health) / opponent.fighter.max_health
-    default player_health_segment_size = (bar_size - player.fighter.max_health) / player.fighter.max_health
+    default guard_segment_size = (bar_size - FightService.MAX_GUARD) / FightService.MAX_GUARD
+    default opponent_health_segment_size = (bar_size - opponent.max_health) / opponent.max_health
+    default player_health_segment_size = (bar_size - player.max_health) / player.max_health
 
     hbox:
         xalign 1.0
@@ -380,18 +377,18 @@ screen health_bars(player, opponent, move=None):
                 spacing 1
 
                 if hasattr(move, "damage"):
-                    for i in range(opponent.fighter.guard - move.damage):
+                    for i in range(opponent.current_guard - move.damage):
                         add Transform("#00f", size=(guard_segment_size, 25))
 
-                    for i in range(min(opponent.fighter.guard, move.damage)):
+                    for i in range(min(opponent.current_guard, move.damage)):
                         add Transform("fight_guard_animation", size=(guard_segment_size, 25))
 
-                    for i in range(BasePlayer.MAX_GUARD - opponent.fighter.guard):
+                    for i in range(FightService.MAX_GUARD - opponent.current_guard):
                         add Transform("#404040", size=(guard_segment_size, 25))
 
                 else:
-                    for i in range(1, BasePlayer.MAX_GUARD + 1):
-                        if i > opponent.fighter.guard:
+                    for i in range(1, FightService.MAX_GUARD + 1):
+                        if i > opponent.current_guard:
                             add Transform("#404040", size=(guard_segment_size, 25))
                         else:
                             add Transform("#00f", size=(guard_segment_size, 25))
@@ -402,29 +399,29 @@ screen health_bars(player, opponent, move=None):
                 spacing 1
 
                 if hasattr(move, "damage"):
-                    for i in range(opponent.fighter.max_health - min(opponent.fighter.health, (move.damage - opponent.fighter.guard)) - (opponent.fighter.max_health - opponent.fighter.health)):
+                    for i in range(opponent.max_health - min(opponent.current_health, (move.damage - opponent.current_guard)) - (opponent.max_health - opponent.current_health)):
                         add Transform("#f00", size=(opponent_health_segment_size, 35))
 
-                    for i in range(min(opponent.fighter.health, (move.damage - opponent.fighter.guard))):
+                    for i in range(min(opponent.current_health, (move.damage - opponent.current_guard))):
                         add Transform("fight_health_animation", size=(opponent_health_segment_size, 35))
 
-                    for i in range(opponent.fighter.max_health - opponent.fighter.health):
+                    for i in range(opponent.max_health - opponent.current_health):
                         add Transform("#404040", size=(opponent_health_segment_size, 35))
 
                 else:
-                    for i in range(1, opponent.fighter.max_health + 1):
-                        if i > opponent.fighter.health:
+                    for i in range(1, opponent.max_health + 1):
+                        if i > opponent.current_health:
                             add Transform("#404040", size=(opponent_health_segment_size, 35))
                         else:
                             add Transform("#f00", size=(opponent_health_segment_size, 35))
 
-        add Transform(opponent.profile_picture, xysize=(65, 65))
+        add Transform(opponent.character.profile_picture, xysize=(65, 65))
 
     hbox:
         pos (20, 50)
         spacing 10
 
-        add Transform(player.profile_picture, xysize=(65, 65))
+        add Transform(player.character.profile_picture, xysize=(65, 65))
 
         vbox:
             yalign 0.5
@@ -435,8 +432,8 @@ screen health_bars(player, opponent, move=None):
                 xalign 0.5
                 spacing 1
 
-                for i in range(1, BasePlayer.MAX_GUARD + 1):
-                    if i > player.fighter.guard:
+                for i in range(1, FightService.MAX_GUARD + 1):
+                    if i > player.current_guard:
                         add Transform("#404040", size=(guard_segment_size, 25))
                     else:
                         add Transform("#00f", size=(guard_segment_size, 25))
@@ -446,8 +443,8 @@ screen health_bars(player, opponent, move=None):
                 xalign 0.5
                 spacing 1
 
-                for i in range(1, player.fighter.max_health + 1):
-                    if i > player.fighter.health:
+                for i in range(1, player.max_health + 1):
+                    if i > player.current_health:
                         add Transform("#404040", size=(player_health_segment_size, 35))
                     else:
                         add Transform("#f00", size=(player_health_segment_size, 35))
@@ -456,7 +453,7 @@ screen health_bars(player, opponent, move=None):
 screen action_info(fight, player, opponent, move):
     style_prefix "fight_turn"
 
-    default player_max_stamina = max(player.stamina, player.max_stamina)
+    default player_max_stamina = max(player.current_stamina, player.max_stamina)
 
     vbox:
         align (0.5, 1.0)
@@ -505,7 +502,7 @@ screen action_info(fight, player, opponent, move):
                 yoffset 60
                 idle_background "fight_action_use_idle"
                 hover_background "fight_action_use_hover"
-                action [Hide("action_info"), Function(player.set_stance_bonus, move), Call("fight_attack_turn", fight, opponent, player, move)]
+                action [Hide("action_info"), Function(FightService.set_stance_bonus, player, move), Call("fight_attack_turn", fight, opponent, player, move)]
                 xysize (160, 96)
                 padding (32, 32)
 
@@ -521,17 +518,17 @@ screen fight_debug(player, opponent):
         background "#fff"
         
         vbox:
-            text "Player Guard: {}".format(player.guard)
-            text "Player Health: {}".format(player.health)
+            text "Player Guard: {}".format(player.current_guard)
+            text "Player Health: {}".format(player.current_health)
             text "Player Stance: {}".format(player.stance)
-            text "Player Stamina: {}".format(player.stamina)
+            text "Player Stamina: {}".format(player.current_stamina)
 
             null height 10
 
-            text "Opponent Guard: {}".format(opponent.guard)
-            text "Opponent Health: {}".format(opponent.health) 
+            text "Opponent Guard: {}".format(opponent.current_guard)
+            text "Opponent Health: {}".format(opponent.current_health) 
             text "Opponent Stance: {}".format(opponent.stance) 
-            text "Opponent Stamina: {}".format(opponent.stamina)
+            text "Opponent Stamina: {}".format(opponent.current_stamina)
 
 
 style fight_overview_title is montserrat_extra_bold_64:
