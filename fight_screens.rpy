@@ -198,11 +198,12 @@ screen fight_overview(fight, title):
                 Jump(fight.end_label)]
             yalign 0.5
 
-    if not (persistent.enabled_tutorials["fight_preparation_tutorial"] or persistent.enabled_tutorials["fight_tutorial"]):
+    if not (persistent.enabled_tutorials["fight_preparation_tutorial"] and persistent.enabled_tutorials["fight_tutorial"]):
         textbutton "SHOW ALL FIGHT TUTORIALS":
             align (1.0, 1.0)
             offset (-100, -100)
             text_font "fonts/Montserrat-Bold.ttf"
+            text_size 20
             action [SetDict(persistent.enabled_tutorials, "fight_preparation_tutorial", True), SetDict(persistent.enabled_tutorials, "fight_tutorial", True), Show("fight_preparation_tutorial")]
 
     if config_debug:
