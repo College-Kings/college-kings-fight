@@ -9,7 +9,7 @@ init -10 python:
 """
 
 
-class SpecialMove(ABC):
+class SpecialMove(ABC, object):
     @abstractmethod
     def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
         ...
