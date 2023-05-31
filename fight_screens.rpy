@@ -28,7 +28,7 @@ screen fight_overview(fight, title):
                     xpos 55
                     spacing 10
 
-                    add Transform(competitor.profile_picture, xysize=(80, 80)) yalign 0.5
+                    add Transform(competitor.character.profile_picture, xysize=(80, 80)) yalign 0.5
 
                 frame:
                     xysize (810, 682)
@@ -416,13 +416,13 @@ screen health_bars(player, opponent, move=None):
                         else:
                             add Transform("#f00", size=(opponent_health_segment_size, 35))
 
-        add Transform(opponent.profile_picture, xysize=(65, 65))
+        add Transform(opponent.character.profile_picture, xysize=(65, 65))
 
     hbox:
         pos (20, 50)
         spacing 10
 
-        add Transform(player.profile_picture, xysize=(65, 65))
+        add Transform(player.character.profile_picture, xysize=(65, 65))
 
         vbox:
             yalign 0.5
