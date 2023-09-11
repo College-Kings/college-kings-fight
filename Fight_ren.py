@@ -27,7 +27,7 @@ class Fight:
     stats: dict[Fighter, dict[str, int]] = field(default_factory=dict)
 
     def __eq__(self, __value: object) -> bool:
-        if not isinstance(__value, Fight):
+        if not isinstance(__value, type(self)):
             return NotImplemented
 
         return (
