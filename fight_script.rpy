@@ -79,7 +79,7 @@ label fight_attack_turn(fight, target, attacker, move=None):
 
     if not fight.move_list:
         $ fight.move_list.append({attacker: []})
-        
+
     $ fight.move_list[-1][attacker].append(move)
 
     if move == end_turn or isinstance(move, EndTurn):

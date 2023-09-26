@@ -92,7 +92,7 @@ screen fight_overview(fight, title):
                                             action NullAction()
 
                                         text attack.name align (0.5, 0.5)
-                            
+
                         hbox:
                             spacing 25
 
@@ -260,7 +260,7 @@ screen fight_player_turn(fight, player, opponent):
 
                             text "IDEAL STANCE" size 14 xalign 0.5
                             text i.name xalign 0.5
- 
+
                     elif selected_move is not None and i == selected_move.end_stance:
                         xysize (135, 63)
 
@@ -517,7 +517,7 @@ screen fight_debug(player, opponent):
     frame:
         pos (50, 100)
         background "#fff"
-        
+
         vbox:
             text "Player Guard: {}".format(player.current_guard)
             text "Player Health: {}".format(player.current_health)
