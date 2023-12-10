@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import Union
 from game.fight.moves.BodyHook_ren import BodyHook
 
