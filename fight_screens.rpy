@@ -206,13 +206,21 @@ screen fight_overview(fight, title):
             text_size 20
             action [SetDict(persistent.enabled_tutorials, "fight_preparation_tutorial", True), SetDict(persistent.enabled_tutorials, "fight_tutorial", True), Show("fight_preparation_tutorial")]
 
-    if config_debug:
-        timer 0.1 action [SetField(opponent, "max_health", int(opponent.max_health)),
-                SetField(opponent, "max_stamina", int(opponent.max_stamina)),
-                Call("fight_start_turn", fight, opponent, player)]
+    if config_debug and competitor == fight.player:
+        $ attack = renpy.random.choice(competitor.special_attacks)
+        $ quirk = renpy.random.choice(fight_quirks)
+
+        timer 0.1 action [
+            SetField(competitor, "special_attack", attack),
+            SetField(competitor, "quirk", quirk),
+            SetField(opponent, "max_health", int(opponent.max_health)),
+            SetField(opponent, "max_stamina", int(opponent.max_stamina)),
+            Call("fight_start_turn", fight, opponent, player)
+        ]
 
     if persistent.enabled_tutorials["fight_preparation_tutorial"]:
         on "show" action Show("fight_preparation_tutorial")
+
 
 screen fight_player_turn(fight, player, opponent):
     tag fight_screen
