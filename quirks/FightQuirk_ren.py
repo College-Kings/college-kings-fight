@@ -1,4 +1,5 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from typing import Protocol
 
 from game.fight.Fighter_ren import Fighter
 from game.fight.moves.types_ren import BaseAttack
@@ -8,7 +9,8 @@ init python:
 """
 
 
-class FightQuirk(ABC):
+class FightQuirk(Protocol):
     @abstractmethod
-    def effect(self, attacker: Fighter, target: Fighter, move: BaseAttack) -> float:
-        ...
+    def effect(
+        self, attacker: "Fighter", target: "Fighter", move: BaseAttack
+    ) -> float: ...

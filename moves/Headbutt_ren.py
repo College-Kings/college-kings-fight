@@ -21,20 +21,22 @@ class Headbutt(SpecialMove):
         self.end_stance = FightStance.SOLID
         self.effect = 'If you used "Turtle" last turn, deal +30% more Damage'
 
-    def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
+    def is_sensitive(
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
+    ) -> bool:
         return fight.stats[target]["guards_broken"] >= 3
 
     def check_level_1_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         return isinstance(fight.move_list[-2][attacker][-1], Turtle)
 
     def check_level_2_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         return target.current_guard == 0
 
     def check_level_3_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         return not fight.move_list[-1][attacker]

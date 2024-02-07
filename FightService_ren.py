@@ -28,8 +28,8 @@ class FightService:
         max_health: int = 20,
         max_stamina: int = 8,
         attack_multiplier: float = 1.0,
-        quirk: Optional[FightQuirk] = None,
-    ) -> Fighter:
+        quirk: Optional["FightQuirk"] = None,
+    ) -> "Fighter":
         return Fighter(
             character,
             stance,
@@ -44,13 +44,13 @@ class FightService:
         )
 
     @staticmethod
-    def set_stance(fighter: Fighter, stance: FightStance) -> None:
+    def set_stance(fighter: "Fighter", stance: FightStance) -> None:
         fighter.stance = stance
         fighter.current_guard = stance.value
 
     @staticmethod
     def set_stance_images(
-        fighter: Fighter, stance_images: dict[FightStance, str]
+        fighter: "Fighter", stance_images: dict[FightStance, str]
     ) -> None:
         if isinstance(fighter.character, PlayableCharacter):
             raise ValueError("Playable characters cannot have stance images")
@@ -58,28 +58,28 @@ class FightService:
         fighter.stance_images = stance_images
 
     @staticmethod
-    def set_stance_bonus(fighter: Fighter, move: BaseAttack) -> None:
+    def set_stance_bonus(fighter: "Fighter", move: "BaseAttack") -> None:
         if fighter.stance == move.ideal_stance:
             fighter.stance_bonus = move
         else:
             fighter.stance_bonus = None
 
     @staticmethod
-    def add_base_attack(fighter: Fighter, move: BaseAttack) -> None:
+    def add_base_attack(fighter: "Fighter", move: "BaseAttack") -> None:
         fighter.base_attacks.append(move)
 
     @staticmethod
-    def add_special_attack(fighter: Fighter, move: SpecialMove) -> None:
+    def add_special_attack(fighter: "Fighter", move: SpecialMove) -> None:
         fighter.special_attacks.append(move)
 
     @staticmethod
-    def set_special_attack(fighter: Fighter, move: SpecialMove) -> None:
+    def set_special_attack(fighter: "Fighter", move: SpecialMove) -> None:
         fighter.special_attack = move
         if move not in fighter.special_attacks:
             fighter.special_attacks.append(move)
 
     @staticmethod
-    def set_quirk(fighter: Fighter, quirk: FightQuirk) -> None:
+    def set_quirk(fighter: "Fighter", quirk: "FightQuirk") -> None:
         fighter.quirk = quirk
 
     @staticmethod
@@ -108,7 +108,9 @@ class FightService:
         }
 
     @staticmethod
-    def get_primed_multiplier(fighter: Fighter, fight: Fight, move: FightMove) -> float:
+    def get_primed_multiplier(
+        fighter: "Fighter", fight: Fight, move: "FightMove"
+    ) -> float:
         if fight.player is None or fight.opponent is None:
             raise ValueError("Fight must have a player and an opponent")
 
@@ -130,7 +132,7 @@ class FightService:
             return 1.0
 
     @staticmethod
-    def get_reckless_multiplier(fighter: Fighter, fight: Fight) -> float:
+    def get_reckless_multiplier(fighter: "Fighter", fight: Fight) -> float:
         if fight.player is None or fight.opponent is None:
             raise ValueError("Fight must have a player and an opponent")
 
@@ -155,7 +157,7 @@ class FightService:
             return 1.0
 
     @staticmethod
-    def get_calculating_multiplier(fighter: Fighter, fight: Fight) -> float:
+    def get_calculating_multiplier(fighter: "Fighter", fight: Fight) -> float:
         if fight.player is None or fight.opponent is None:
             raise ValueError("Fight must have a player and an opponent")
 
@@ -181,7 +183,7 @@ class FightService:
             return 0
 
     @staticmethod
-    def get_stance_multiplier(fighter: Fighter, fight: Fight) -> float:
+    def get_stance_multiplier(fighter: "Fighter", fight: Fight) -> float:
         if isinstance(fighter.stance_bonus, BodyHook):
             return 1.2
 

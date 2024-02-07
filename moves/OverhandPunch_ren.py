@@ -21,20 +21,22 @@ class OverhandPunch(SpecialMove):
         self.end_stance = FightStance.AGGRESSIVE
         self.effect = "Breaks Guard and deals 100% Damage if it's at 30% or less"
 
-    def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
+    def is_sensitive(
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
+    ) -> bool:
         return fight.stats[attacker]["guards_broken"] >= 3
 
     def check_level_1_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         return target.current_guard <= FightService.MAX_GUARD * 0.3
 
     def check_level_2_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def check_level_3_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError

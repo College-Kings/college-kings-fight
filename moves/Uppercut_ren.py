@@ -24,20 +24,22 @@ class Uppercut(SpecialMove):
             "If Opponent's Health is 20% or less, this attack deals +50% Damage"
         )
 
-    def is_sensitive(self, fight: Fight, target: Fighter, attacker: Fighter) -> bool:
+    def is_sensitive(
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
+    ) -> bool:
         return fight.stats[attacker]["damage_dealt"] >= 40
 
     def check_level_1_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         return target.current_health <= target.max_health * 0.2
 
     def check_level_2_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         raise NotImplementedError()
 
     def check_level_3_stance_bonus(
-        self, fight: Fight, target: Fighter, attacker: Fighter
+        self, fight: Fight, target: "Fighter", attacker: "Fighter"
     ) -> bool:
         return not fight.move_list[-1][attacker]
