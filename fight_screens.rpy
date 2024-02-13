@@ -19,7 +19,7 @@ screen fight_overview(fight, title):
         align (0.5, 0.5)
         spacing 100
 
-        for competitor in (fight.player, fight.opponent):
+        for competitor in (player, opponent):
             frame:
                 xysize (898, 771)
                 background "fight_frame_background"
@@ -58,7 +58,7 @@ screen fight_overview(fight, title):
                                 for attack in competitor.base_attacks:
                                     button:
                                         background "fight_attack_idle"
-                                        hovered SetScreenVariable("hovering_opponent", competitor != fight.player)
+                                        hovered SetScreenVariable("hovering_opponent", competitor != player)
                                         tooltip attack.description
                                         action NullAction()
                                         xysize (206, 58)
@@ -83,9 +83,9 @@ screen fight_overview(fight, title):
                                         selected (competitor.special_attack == attack)
                                         xysize (206, 58)
                                         padding (5, 5)
-                                        hovered SetScreenVariable("hovering_opponent", competitor != fight.player)
+                                        hovered SetScreenVariable("hovering_opponent", competitor != player)
                                         tooltip attack.effect
-                                        if competitor == fight.player:
+                                        if competitor == player:
                                             hover_background "fight_attack_hover"
                                             action SetField(competitor, "special_attack", attack)
                                         else:
@@ -109,9 +109,9 @@ screen fight_overview(fight, title):
                                         selected (competitor.quirk == quirk)
                                         xysize (206, 58)
                                         padding (5, 5)
-                                        hovered SetScreenVariable("hovering_opponent", competitor != fight.player)
+                                        hovered SetScreenVariable("hovering_opponent", competitor != player)
                                         tooltip quirk.description
-                                        if competitor == fight.player:
+                                        if competitor == player:
                                             hover_background "fight_attack_hover"
                                             action SetField(competitor, "quirk", quirk)
                                         elif competitor.quirk == quirk:
@@ -206,13 +206,13 @@ screen fight_overview(fight, title):
             text_size 20
             action [SetDict(persistent.enabled_tutorials, "fight_preparation_tutorial", True), SetDict(persistent.enabled_tutorials, "fight_tutorial", True), Show("fight_preparation_tutorial")]
 
-    if config_debug and competitor == fight.player:
-        $ attack = renpy.random.choice(competitor.special_attacks)
+    if config_debug:
+        $ attack = renpy.random.choice(player.special_attacks)
         $ quirk = renpy.random.choice(fight_quirks)
 
         timer 0.1 action [
-            SetField(competitor, "special_attack", attack),
-            SetField(competitor, "quirk", quirk),
+            SetField(player, "special_attack", attack),
+            SetField(player, "quirk", quirk),
             SetField(opponent, "max_health", int(opponent.max_health)),
             SetField(opponent, "max_stamina", int(opponent.max_stamina)),
             Call("fight_start_turn", fight, opponent, player)
