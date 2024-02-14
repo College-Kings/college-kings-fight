@@ -215,6 +215,7 @@ screen fight_overview(fight, title):
             SetField(player, "quirk", quirk),
             SetField(opponent, "max_health", int(opponent.max_health)),
             SetField(opponent, "max_stamina", int(opponent.max_stamina)),
+            Function(FightService.start_fight, fight),
             Call("fight_start_turn", fight, opponent, player)
         ]
 
