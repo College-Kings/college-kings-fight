@@ -191,7 +191,7 @@ screen fight_overview(fight, title):
         imagebutton:
             idle "fight_skip_fight_idle"
             hover "fight_skip_fight_hover"
-            action [If(player.special_attack is None, SetField(player, "special_attack", renpy.random.choice(player.special_attacks))), If(player.quirk is None, SetField(player, "quirk", renpy.random.choice(fight_quirks)), SetField(opponent, "max_health", int(opponent.max_health)),
+            action [If(player.special_attack is None, SetField(player, "special_attack", renpy.random.choice(player.special_attacks))), If(player.quirk is None, SetField(player, "quirk", renpy.random.choice(fight_quirks))), SetField(opponent, "max_health", int(opponent.max_health)),
                 SetField(opponent, "max_stamina", int(opponent.max_stamina)),
                 Jump(fight.end_label)]
             yalign 0.5
