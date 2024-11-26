@@ -1,6 +1,6 @@
 from typing import Optional
 
-from game.characters.character_ren import Character
+from game.characters.base_character_ren import BaseCharacter
 from game.characters.PlayableCharacters_ren import PlayableCharacter
 from game.fight.FightStance_ren import FightStance
 from game.fight.Fight_ren import Fight
@@ -23,7 +23,7 @@ class FightService:
 
     @staticmethod
     def create_fighter(
-        character: Character,
+        character: BaseCharacter,
         stance: FightStance,
         max_health: int = 20,
         max_stamina: int = 8,

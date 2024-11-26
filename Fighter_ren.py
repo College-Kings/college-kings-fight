@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from game.characters.character_ren import Character
+from game.characters.base_character_ren import BaseCharacter
 from game.fight.FightStance_ren import FightStance
 from game.fight.moves.types_ren import BaseAttack, FightMove
 from game.fight.quirks.FightQuirk_ren import FightQuirk
@@ -14,7 +14,7 @@ init 10 python:
 
 @dataclass
 class Fighter:
-    character: Character
+    character: BaseCharacter
     stance: FightStance
     max_health: int
     max_stamina: int
